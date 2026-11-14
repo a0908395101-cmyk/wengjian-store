@@ -94,21 +94,29 @@
           </div>
         </div>
 
-        <!-- 視圖切換按鈕 -->
-        <div class="flex items-center bg-kiln-dark/70 p-1 rounded-xl border border-kiln-gold/30 order-3 md:order-2 w-full md:w-auto justify-center">
-          <button id="btn-view-store" onclick="switchView('store')" class="flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 bg-kiln-gold text-kiln-dark font-bold shadow">
+        <!-- 主導覽列切換按鈕（所有醬香 / 風味推薦 / 訂單查詢 / 營運管理） -->
+        <nav class="flex items-center bg-kiln-dark/70 p-1 rounded-xl border border-kiln-gold/30 order-3 md:order-2 w-full md:w-auto justify-center overflow-x-auto">
+          <button id="btn-view-store" onclick="switchView('store')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-1.5 bg-kiln-gold text-kiln-dark font-bold shadow shrink-0 cursor-pointer">
             <i class="fa-solid fa-store"></i>
-            <span>前台購物商城</span>
+            <span>所有醬香</span>
           </button>
-          <button id="btn-view-admin" onclick="switchView('admin')" class="flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 text-kiln-cream/80 hover:text-white">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>後台營運管理</span>
+          <button id="btn-view-recommend" onclick="jumpToRecommend()" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-1.5 text-kiln-cream/80 hover:text-white shrink-0 cursor-pointer">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>風味推薦</span>
           </button>
-        </div>
+          <button id="btn-view-orders" onclick="switchView('orders')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-1.5 text-kiln-cream/80 hover:text-white shrink-0 cursor-pointer">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>訂單查詢</span>
+          </button>
+          <button id="btn-view-admin" onclick="requestAdminAccess()" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-1.5 text-kiln-cream/80 hover:text-white shrink-0 cursor-pointer">
+            <i class="fa-solid fa-lock text-kiln-gold text-xs"></i>
+            <span>營運管理</span>
+          </button>
+        </nav>
 
         <!-- 右側操作區（購物車按鈕） -->
         <div class="flex items-center gap-3 order-2 md:order-3">
-          <button onclick="toggleCart(true)" class="relative px-4 py-2.5 rounded-xl bg-kiln-amber hover:bg-kiln-caramel text-white font-medium text-sm transition flex items-center gap-2 shadow border border-kiln-gold/40">
+          <button onclick="toggleCart(true)" class="relative px-4 py-2.5 rounded-xl bg-kiln-amber hover:bg-kiln-caramel text-white font-medium text-sm transition flex items-center gap-2 shadow border border-kiln-gold/40 cursor-pointer">
             <i class="fa-solid fa-basket-shopping"></i>
             <span class="hidden sm:inline">購物車</span>
             <span id="cart-badge" class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-kiln-dark bg-kiln-gold rounded-full">0</span>
@@ -148,9 +156,9 @@
                 <span>立即選購純釀醬油</span>
                 <i class="fa-solid fa-arrow-down"></i>
               </a>
-              <button onclick="switchView('admin')" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/30 text-sm font-medium transition flex items-center gap-2">
-                <i class="fa-solid fa-gauge-high text-kiln-gold"></i>
-                <span>檢視品牌營運後台</span>
+              <button onclick="switchView('orders')" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/30 text-sm font-medium transition flex items-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-magnifying-glass text-kiln-gold"></i>
+                <span>查詢我的訂單</span>
               </button>
             </div>
           </div>
@@ -177,11 +185,11 @@
             </div>
             <div class="bg-kiln-dark/60 backdrop-blur-sm border border-kiln-gold/30 rounded-2xl p-4 flex items-center gap-4">
               <div class="w-12 h-12 rounded-xl bg-kiln-amber/40 border border-kiln-gold/40 flex items-center justify-center text-kiln-gold text-xl shrink-0">
-                <i class="fa-solid fa-award"></i>
+                <i class="fa-solid fa-credit-card"></i>
               </div>
               <div>
-                <h3 class="font-serif-brand font-bold text-white text-base">米其林星級主廚指定</h3>
-                <p class="text-xs text-kiln-cream/75 mt-0.5">滷、燉、沾、拌皆能完美提鮮，餐桌上的靈魂風味</p>
+                <h3 class="font-serif-brand font-bold text-white text-base">支援信用卡安全線上結帳</h3>
+                <p class="text-xs text-kiln-cream/75 mt-0.5">支援 VISA / MasterCard / JCB 刷卡與貨到付款，訂單隨時可查</p>
               </div>
             </div>
           </div>
@@ -190,7 +198,7 @@
     </section>
 
     <!-- 「讓料理遇見對的醬香」推薦功能專區 -->
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 mb-8">
+    <section id="recommend-section" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 mb-8">
       <div class="bg-kiln-brown text-kiln-paper rounded-3xl p-6 sm:p-10 shadow-2xl border border-kiln-gold/40 relative overflow-hidden">
         <div class="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-kiln-amber/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="relative z-10 space-y-6">
@@ -255,18 +263,16 @@
         
         <!-- 分類標籤按鈕 -->
         <div id="category-filters" class="flex flex-wrap gap-2">
-          <button onclick="filterCategory('全部商品')" data-cat="全部商品" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-brown text-white shadow transition">全部商品 (10)</button>
-          <button onclick="filterCategory('黑豆蔭油系列')" data-cat="黑豆蔭油系列" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition">黑豆蔭油系列</button>
-          <button onclick="filterCategory('薄鹽甘醇系列')" data-cat="薄鹽甘醇系列" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition">薄鹽甘醇系列</button>
-          <button onclick="filterCategory('料理油膏系列')" data-cat="料理油膏系列" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition">料理油膏系列</button>
-          <button onclick="filterCategory('職人禮盒組')" data-cat="職人禮盒組" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition">職人禮盒組</button>
+          <button onclick="filterCategory('全部商品')" data-cat="全部商品" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-brown text-white shadow transition cursor-pointer">全部商品 (10)</button>
+          <button onclick="filterCategory('黑豆蔭油系列')" data-cat="黑豆蔭油系列" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition cursor-pointer">黑豆蔭油系列</button>
+          <button onclick="filterCategory('薄鹽甘醇系列')" data-cat="薄鹽甘醇系列" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition cursor-pointer">薄鹽甘醇系列</button>
+          <button onclick="filterCategory('料理油膏系列')" data-cat="料理油膏系列" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition cursor-pointer">料理油膏系列</button>
+          <button onclick="filterCategory('職人禮盒組')" data-cat="職人禮盒組" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition cursor-pointer">職人禮盒組</button>
         </div>
       </div>
 
       <!-- 商品卡片網格 -->
-      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-        <!-- 由 JS 動態渲染 10 款獨特瓶身與標籤的商品 -->
-      </div>
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
     </section>
 
     <!-- 「把心意，裝進一只禮盒」客製禮盒專區 -->
@@ -291,278 +297,434 @@
     </section>
   </main>
 
-  <!-- ==================== 視圖二：後台營運管理系統 ==================== -->
-  <main id="view-admin" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <!-- ==================== 視圖二：顧客訂單查詢 (ORDER TRACKING) ==================== -->
+  <main id="view-orders" class="hidden flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-3xl p-8 sm:p-12 border border-kiln-border shadow-md space-y-8">
+      <div class="space-y-2 border-b border-kiln-border pb-6">
+        <span class="text-xs font-bold tracking-widest text-kiln-amber uppercase">ORDER TRACKING</span>
+        <h2 class="font-serif-brand text-3xl sm:text-4xl font-bold text-kiln-brown">查詢你的訂單</h2>
+        <p class="text-sm text-kiln-brown/70">輸入訂單編號與下單電話，即時查看訂單內容、信用卡付款明細與出貨處理狀態。</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-xs font-bold text-kiln-brown mb-2">訂單編號</label>
+          <input type="text" id="track-order-id" placeholder="例如 WJ20261114-089" class="w-full px-4 py-3 rounded-xl border border-kiln-border bg-kiln-paper text-sm focus:outline-none focus:border-kiln-amber">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-kiln-brown mb-2">下單電話</label>
+          <input type="text" id="track-order-phone" placeholder="訂單聯絡電話（例：0912345678）" class="w-full px-4 py-3 rounded-xl border border-kiln-border bg-kiln-paper text-sm focus:outline-none focus:border-kiln-amber">
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-3">
+        <button onclick="searchCustomerOrder()" class="w-full sm:flex-1 py-3.5 rounded-xl bg-[#7A351E] hover:bg-[#612815] text-white font-bold text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer">
+          <span>查詢訂單</span>
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button onclick="fillSampleTrackOrder()" class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-kiln-cream hover:bg-kiln-border text-kiln-brown text-xs font-bold transition cursor-pointer">
+          一鍵填入範例訂單測試
+        </button>
+      </div>
+
+      <!-- 查詢結果顯示區 -->
+      <div id="order-track-result" class="hidden pt-4"></div>
+    </div>
+  </main>
+
+  <!-- ==================== 視圖三：後台營運管理系統（需帳號密碼 1234 / 1234 驗證） ==================== -->
+  <main id="view-admin" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     
-    <!-- 後台頂部標題列 -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-kiln-border shadow-sm">
+    <!-- 後台頂部標題列與登出鎖定按鈕 -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-kiln-border shadow-sm">
       <div>
         <div class="flex items-center gap-2">
-          <span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">系統連線正常</span>
-          <span class="text-xs text-kiln-brown/60">2026 年度營運報表中心</span>
+          <span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
+            <i class="fa-solid fa-shield-halved mr-1"></i>管理員 (1234) 已登入
+          </span>
+          <span class="text-xs text-kiln-brown/60">WENG JIAN / OPERATIONS</span>
         </div>
-        <h2 class="font-serif-brand text-2xl sm:text-3xl font-bold text-kiln-brown mt-1">甕見品牌・營運數據與進銷存管理中心</h2>
+        <h2 class="font-serif-brand text-2xl sm:text-3xl font-bold text-kiln-brown mt-1">甕見品牌・營運管理與決策分析中心</h2>
       </div>
       <div class="flex flex-wrap gap-2">
-        <button onclick="openAddProductModal()" class="px-4 py-2.5 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-white text-sm font-medium transition flex items-center gap-2 shadow">
+        <button onclick="openAddProductModal()" class="px-4 py-2.5 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-white text-sm font-medium transition flex items-center gap-2 shadow cursor-pointer">
           <i class="fa-solid fa-plus text-kiln-gold"></i>
           <span>上架新醬油商品</span>
         </button>
-        <button onclick="switchView('store')" class="px-4 py-2.5 rounded-xl bg-kiln-cream hover:bg-kiln-border text-kiln-brown text-sm font-medium transition flex items-center gap-2">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          <span>返回前台測試下單</span>
+        <button onclick="lockAdminSession()" class="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-sm font-medium transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>登出並鎖定後台</span>
         </button>
       </div>
     </div>
 
-    <!-- KPI 關鍵營運指標卡片（總營收 100 萬以上：NT$ 1,485,200） -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="bg-gradient-to-br from-kiln-brown to-kiln-dark text-white p-6 rounded-2xl shadow-md border border-kiln-gold/40 relative overflow-hidden">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-medium text-kiln-cream/80 tracking-wider">累計總營收 (Total Revenue)</span>
-          <div class="w-9 h-9 rounded-lg bg-kiln-gold/20 flex items-center justify-center text-kiln-gold">
-            <i class="fa-solid fa-sack-dollar"></i>
-          </div>
-        </div>
-        <div class="mt-3 flex items-baseline gap-2">
-          <span id="kpi-revenue" class="font-serif-brand text-3xl font-bold text-kiln-gold tracking-tight">NT$ 1,485,200</span>
-        </div>
-        <div class="mt-3 flex items-center gap-2 text-xs">
-          <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold">
-            <i class="fa-solid fa-arrow-trend-up"></i> +32.4%
-          </span>
-          <span class="text-kiln-cream/70">穩健突破 100 萬年度銷售目標</span>
-        </div>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-kiln-brown/70">累計訂單總數 (Orders)</span>
-          <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-kiln-amber">
-            <i class="fa-solid fa-receipt"></i>
-          </div>
-        </div>
-        <div class="mt-3">
-          <span id="kpi-orders" class="font-serif-brand text-3xl font-bold text-kiln-brown">1,642</span>
-          <span class="text-sm text-kiln-brown/60 ml-1">筆</span>
-        </div>
-        <div class="mt-3 flex items-center gap-2 text-xs">
-          <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> +21.5%</span>
-          <span class="text-kiln-brown/60">十款新品上市熱銷</span>
-        </div>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-kiln-brown/70">平均客單價 (AOV)</span>
-          <div class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-orange-700">
-            <i class="fa-solid fa-cart-shopping"></i>
-          </div>
-        </div>
-        <div class="mt-3">
-          <span id="kpi-aov" class="font-serif-brand text-3xl font-bold text-kiln-brown">NT$ 904</span>
-        </div>
-        <div class="mt-3 flex items-center gap-2 text-xs">
-          <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> +8.1%</span>
-          <span class="text-kiln-brown/60">多瓶組與禮盒帶動</span>
-        </div>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-kiln-brown/70">老顧客回購率 (Retention)</span>
-          <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
-            <i class="fa-solid fa-heart"></i>
-          </div>
-        </div>
-        <div class="mt-3">
-          <span class="font-serif-brand text-3xl font-bold text-kiln-brown">72.4%</span>
-        </div>
-        <div class="mt-3 flex items-center gap-2 text-xs">
-          <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-check"></i> 職人純釀好口碑</span>
-          <span class="text-kiln-brown/60">平均 2 個月回購一次</span>
-        </div>
-      </div>
+    <!-- 後台三大模組分頁切換列 -->
+    <div class="flex flex-wrap gap-2 bg-white p-2 rounded-2xl border border-kiln-border shadow-2xs">
+      <button id="tab-admin-overview" onclick="switchAdminTab('overview')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-bold bg-kiln-brown text-kiln-gold shadow transition flex items-center justify-center gap-2 cursor-pointer">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>總覽、庫存與訂單管理</span>
+      </button>
+      <button id="tab-admin-abc" onclick="switchAdminTab('abc')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-medium text-kiln-brown hover:bg-kiln-cream transition flex items-center justify-center gap-2 cursor-pointer">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>ABC 商品與顧客分析</span>
+      </button>
+      <button id="tab-admin-strategy" onclick="switchAdminTab('strategy')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-medium text-kiln-brown hover:bg-kiln-cream transition flex items-center justify-center gap-2 cursor-pointer">
+        <i class="fa-solid fa-chess"></i>
+        <span>補貨與經營策略</span>
+      </button>
     </div>
 
-    <!-- 數據視覺化圖表區 -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div class="lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+    <!-- ===== 後台子分頁 1：總覽、庫存與訂單管理 ===== -->
+    <div id="admin-sub-overview" class="space-y-8">
+      <!-- KPI 關鍵營運指標卡片 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="bg-gradient-to-br from-kiln-brown to-kiln-dark text-white p-6 rounded-2xl shadow-md border border-kiln-gold/40 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-kiln-cream/80 tracking-wider">累計總營收 (Total Revenue)</span>
+            <div class="w-9 h-9 rounded-lg bg-kiln-gold/20 flex items-center justify-center text-kiln-gold">
+              <i class="fa-solid fa-sack-dollar"></i>
+            </div>
+          </div>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span id="kpi-revenue" class="font-serif-brand text-3xl font-bold text-kiln-gold tracking-tight">NT$ 1,485,200</span>
+          </div>
+          <div class="mt-3 flex items-center gap-2 text-xs">
+            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold">
+              <i class="fa-solid fa-arrow-trend-up"></i> +32.4%
+            </span>
+            <span class="text-kiln-cream/70">已達成百萬年度銷售目標</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-kiln-brown/70">累計訂單總數 (Orders)</span>
+            <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-kiln-amber">
+              <i class="fa-solid fa-receipt"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span id="kpi-orders" class="font-serif-brand text-3xl font-bold text-kiln-brown">1,642</span>
+            <span class="text-sm text-kiln-brown/60 ml-1">筆</span>
+          </div>
+          <div class="mt-3 flex items-center gap-2 text-xs">
+            <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> +21.5%</span>
+            <span class="text-kiln-brown/60">信用卡線上結帳佔 78%</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-kiln-brown/70">平均客單價 (AOV)</span>
+            <div class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-orange-700">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span id="kpi-aov" class="font-serif-brand text-3xl font-bold text-kiln-brown">NT$ 904</span>
+          </div>
+          <div class="mt-3 flex items-center gap-2 text-xs">
+            <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> +8.1%</span>
+            <span class="text-kiln-brown/60">禮盒與多入組帶動</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-kiln-border">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-kiln-brown/70">老顧客回購率 (Retention)</span>
+            <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span class="font-serif-brand text-3xl font-bold text-kiln-brown">72.4%</span>
+          </div>
+          <div class="mt-3 flex items-center gap-2 text-xs">
+            <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-check"></i> 職人純釀好口碑</span>
+            <span class="text-kiln-brown/60">平均 2 個月回購一次</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 商品庫存與價格管理表格 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-kiln-border overflow-hidden">
+        <div class="p-6 border-b border-kiln-border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h3 class="font-serif-brand text-lg font-bold text-kiln-brown">近六個月營收成長趨勢（單位：新台幣元）</h3>
-            <p class="text-xs text-kiln-brown/60">十款系列全面熱銷，累計營收已突破 148 萬元</p>
-          </div>
-          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-kiln-cream text-kiln-amber">累計 NT$ 1,485,200+</span>
-        </div>
-
-        <div class="h-64 flex items-end justify-between gap-3 sm:gap-6 pt-8 pb-2 px-2 border-b border-kiln-border relative">
-          <div class="absolute inset-x-0 top-8 border-t border-dashed border-gray-200 text-[10px] text-gray-400">NT$ 350,000</div>
-          <div class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 text-[10px] text-gray-400">NT$ 175,000</div>
-
-          <div class="flex-1 flex flex-col items-center gap-2 z-10 h-full justify-end group">
-            <span class="text-xs font-bold text-kiln-brown opacity-80 group-hover:opacity-100">18.5萬</span>
-            <div class="w-full max-w-[48px] bg-kiln-amber/70 group-hover:bg-kiln-amber rounded-t-lg transition-all duration-500" style="height: 52%;"></div>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-2 z-10 h-full justify-end group">
-            <span class="text-xs font-bold text-kiln-brown opacity-80 group-hover:opacity-100">21.2萬</span>
-            <div class="w-full max-w-[48px] bg-kiln-amber/80 group-hover:bg-kiln-amber rounded-t-lg transition-all duration-500" style="height: 60%;"></div>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-2 z-10 h-full justify-end group">
-            <span class="text-xs font-bold text-kiln-brown opacity-80 group-hover:opacity-100">23.8萬</span>
-            <div class="w-full max-w-[48px] bg-kiln-amber/85 group-hover:bg-kiln-amber rounded-t-lg transition-all duration-500" style="height: 68%;"></div>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-2 z-10 h-full justify-end group">
-            <span class="text-xs font-bold text-kiln-amber">29.5萬</span>
-            <div class="w-full max-w-[48px] bg-gradient-to-t from-kiln-amber to-kiln-gold rounded-t-lg transition-all duration-500 shadow" style="height: 84%;"></div>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-2 z-10 h-full justify-end group">
-            <span class="text-xs font-bold text-kiln-brown opacity-80 group-hover:opacity-100">25.8萬</span>
-            <div class="w-full max-w-[48px] bg-kiln-amber/90 group-hover:bg-kiln-amber rounded-t-lg transition-all duration-500" style="height: 74%;"></div>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-2 z-10 h-full justify-end group">
-            <span id="chart-nov-label" class="text-xs font-bold text-red-700">30.4萬</span>
-            <div id="chart-nov-bar" class="w-full max-w-[48px] bg-gradient-to-t from-kiln-brown via-kiln-amber to-kiln-gold rounded-t-lg transition-all duration-500 shadow-md" style="height: 90%;"></div>
+            <h3 class="font-serif-brand text-lg font-bold text-kiln-brown">甕見商品目錄、庫存與售價管理</h3>
+            <p class="text-xs text-kiln-brown/60">修改售價或庫存數量後，前台購物商城將即時同步更新</p>
           </div>
         </div>
-        <div class="flex justify-between text-xs font-medium text-kiln-brown/70 pt-2 px-2">
-          <span class="flex-1 text-center">6月</span>
-          <span class="flex-1 text-center">7月</span>
-          <span class="flex-1 text-center">8月</span>
-          <span class="flex-1 text-center font-bold text-kiln-amber">9月(中秋)</span>
-          <span class="flex-1 text-center">10月</span>
-          <span class="flex-1 text-center font-bold text-kiln-brown">11月(本月)</span>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-kiln-cream/70 text-kiln-brown text-xs uppercase tracking-wider border-b border-kiln-border">
+                <th class="py-3.5 px-4">商品視覺與名稱</th>
+                <th class="py-3.5 px-4">系列分類</th>
+                <th class="py-3.5 px-4">容量規格</th>
+                <th class="py-3.5 px-4">售價 (NT$)</th>
+                <th class="py-3.5 px-4">現有庫存</th>
+                <th class="py-3.5 px-4">狀態</th>
+              </tr>
+            </thead>
+            <tbody id="admin-product-tbody" class="divide-y divide-kiln-border text-sm"></tbody>
+          </table>
         </div>
       </div>
 
-      <div class="lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-kiln-border flex flex-col justify-between">
-        <div>
-          <h3 class="font-serif-brand text-lg font-bold text-kiln-brown">各系列產品銷售佔比</h3>
-          <p class="text-xs text-kiln-brown/60 mt-0.5">十大品項營收分析</p>
-
-          <div class="space-y-4 mt-6">
-            <div>
-              <div class="flex justify-between text-sm font-medium mb-1">
-                <span>黑豆蔭油系列 (含清油/膏)</span>
-                <span class="font-bold text-kiln-brown">40%</span>
-              </div>
-              <div class="w-full bg-kiln-cream rounded-full h-2.5">
-                <div class="bg-kiln-brown h-2.5 rounded-full" style="width: 40%"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between text-sm font-medium mb-1">
-                <span>職人禮盒組</span>
-                <span class="font-bold text-kiln-amber">26%</span>
-              </div>
-              <div class="w-full bg-kiln-cream rounded-full h-2.5">
-                <div class="bg-kiln-gold h-2.5 rounded-full" style="width: 26%"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between text-sm font-medium mb-1">
-                <span>薄鹽甘醇系列 (含白醬油/露)</span>
-                <span class="font-bold text-emerald-700">22%</span>
-              </div>
-              <div class="w-full bg-kiln-cream rounded-full h-2.5">
-                <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 22%"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between text-sm font-medium mb-1">
-                <span>料理油膏系列 (含素蠔油/白曝)</span>
-                <span class="font-bold text-orange-700">12%</span>
-              </div>
-              <div class="w-full bg-kiln-cream rounded-full h-2.5">
-                <div class="bg-orange-500 h-2.5 rounded-full" style="width: 12%"></div>
-              </div>
-            </div>
+      <!-- 近期顧客訂單管理列表 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-kiln-border overflow-hidden">
+        <div class="p-6 border-b border-kiln-border flex items-center justify-between">
+          <div>
+            <h3 class="font-serif-brand text-lg font-bold text-kiln-brown">近期顧客訂單管理（含信用卡付款紀錄）</h3>
+            <p class="text-xs text-kiln-brown/60">前台結帳的新訂單會即時顯示於最上方，並同步至顧客訂單查詢系統</p>
           </div>
         </div>
-
-        <div class="mt-6 p-3.5 rounded-xl bg-kiln-cream/80 border border-kiln-border text-xs text-kiln-brown/80 leading-relaxed">
-          <i class="fa-solid fa-lightbulb text-kiln-gold mr-1"></i>
-          <strong>營運洞察：</strong>十款商品線互補性佳，其中「甕見・極品白曝油」與「特濃香菇素蠔油」新品帶動整體客單價上升。
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-kiln-cream/70 text-kiln-brown text-xs uppercase tracking-wider border-b border-kiln-border">
+                <th class="py-3.5 px-4">訂單編號</th>
+                <th class="py-3.5 px-4">訂購人 / 電話</th>
+                <th class="py-3.5 px-4">購買商品明細</th>
+                <th class="py-3.5 px-4">付款方式</th>
+                <th class="py-3.5 px-4">訂單金額</th>
+                <th class="py-3.5 px-4">出貨狀態（點擊切換）</th>
+              </tr>
+            </thead>
+            <tbody id="admin-order-tbody" class="divide-y divide-kiln-border text-sm"></tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- 商品庫存與價格管理表格 -->
-    <div class="bg-white rounded-2xl shadow-sm border border-kiln-border overflow-hidden">
-      <div class="p-6 border-b border-kiln-border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <h3 class="font-serif-brand text-lg font-bold text-kiln-brown">甕見商品庫存與售價管理（共 10 款）</h3>
-          <p class="text-xs text-kiln-brown/60">修改售價或庫存數量後，前台購物商城將即時同步更新</p>
+    <!-- ===== 後台子分頁 2：ABC 商品與顧客分析 ===== -->
+    <div id="admin-sub-abc" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-kiln-border shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-kiln-border">
+          <div>
+            <span class="text-xs font-bold tracking-widest text-kiln-amber uppercase">WENG JIAN / ABC PARETO ANALYSIS</span>
+            <h3 class="font-serif-brand text-2xl font-bold text-kiln-brown mt-0.5">商品與顧客貢獻度 ABC 分類分析</h3>
+            <p class="text-xs text-kiln-brown/70 mt-1">ABC 分級依營收貢獻排序；佔比與累積佔比協助辨識經營重點（A類：累積佔比 ≤ 70%、B類：70%~90%、C類：> 90%）</p>
+          </div>
+          <span class="px-3 py-1.5 rounded-xl bg-kiln-cream text-kiln-brown text-xs font-bold border border-kiln-border">
+            LIVE VIEW・台灣時間
+          </span>
         </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-kiln-cream/70 text-kiln-brown text-xs uppercase tracking-wider border-b border-kiln-border">
-              <th class="py-3.5 px-4">商品視覺與名稱</th>
-              <th class="py-3.5 px-4">系列分類</th>
-              <th class="py-3.5 px-4">容量規格</th>
-              <th class="py-3.5 px-4">售價 (NT$)</th>
-              <th class="py-3.5 px-4">現有庫存</th>
-              <th class="py-3.5 px-4">狀態</th>
-            </tr>
-          </thead>
-          <tbody id="admin-product-tbody" class="divide-y divide-kiln-border text-sm">
-            <!-- 由 JS 動態生成 -->
-          </tbody>
-        </table>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+          <!-- 左側：商品貢獻分析 (8欄) -->
+          <div class="lg:col-span-8 bg-kiln-paper/50 p-5 rounded-2xl border border-kiln-border">
+            <h4 class="font-serif-brand text-lg font-bold text-kiln-brown mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-ranking-star text-kiln-amber"></i>
+              <span>商品營收貢獻 ABC 排行榜</span>
+            </h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="border-b border-kiln-border text-xs text-kiln-brown/70">
+                    <th class="py-2.5 px-3">排名</th>
+                    <th class="py-2.5 px-3">商品名稱</th>
+                    <th class="py-2.5 px-3 text-right">累計營收</th>
+                    <th class="py-2.5 px-3 text-right">營收佔比</th>
+                    <th class="py-2.5 px-3 text-right">累積佔比</th>
+                    <th class="py-2.5 px-3 text-center">ABC 分級</th>
+                    <th class="py-2.5 px-3 text-right">現有庫存</th>
+                  </tr>
+                </thead>
+                <tbody id="abc-product-tbody" class="divide-y divide-kiln-border/60"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 右側：顧客貢獻分析 (4欄) -->
+          <div class="lg:col-span-4 bg-kiln-paper/50 p-5 rounded-2xl border border-kiln-border">
+            <h4 class="font-serif-brand text-lg font-bold text-kiln-brown mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-users text-kiln-amber"></i>
+              <span>VIP 顧客貢獻排行</span>
+            </h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="border-b border-kiln-border text-xs text-kiln-brown/70">
+                    <th class="py-2.5 px-2">排名</th>
+                    <th class="py-2.5 px-2">顧客</th>
+                    <th class="py-2.5 px-2 text-center">等級</th>
+                    <th class="py-2.5 px-2 text-right">累計消費</th>
+                  </tr>
+                </thead>
+                <tbody id="abc-customer-tbody" class="divide-y divide-kiln-border/60"></tbody>
+              </table>
+            </div>
+            <div class="mt-4 p-3 rounded-xl bg-white border border-kiln-border text-xs text-kiln-brown/75 leading-relaxed">
+              <strong>VIP 經營提示：</strong>前 20% 高價值顧客貢獻超過 58% 複購營收，建議針對 A 級顧客提供新品優先試吃與節慶禮盒早鳥禮遇。
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 近期顧客訂單管理列表 -->
-    <div class="bg-white rounded-2xl shadow-sm border border-kiln-border overflow-hidden">
-      <div class="p-6 border-b border-kiln-border flex items-center justify-between">
-        <div>
-          <h3 class="font-serif-brand text-lg font-bold text-kiln-brown">近期顧客訂單管理</h3>
-          <p class="text-xs text-kiln-brown/60">前台模擬結帳的新訂單會即時顯示於最上方</p>
+    <!-- ===== 後台子分頁 3：補貨與經營策略 ===== -->
+    <div id="admin-sub-strategy" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-kiln-border shadow-sm space-y-8">
+        <div class="border-b border-kiln-border pb-4">
+          <span class="text-xs font-bold tracking-widest text-kiln-amber uppercase">WENG JIAN / OPERATIONS STRATEGY</span>
+          <h3 class="font-serif-brand text-2xl font-bold text-kiln-brown mt-0.5">補貨建議與數據驅動經營策略</h3>
         </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-kiln-cream/70 text-kiln-brown text-xs uppercase tracking-wider border-b border-kiln-border">
-              <th class="py-3.5 px-4">訂單編號</th>
-              <th class="py-3.5 px-4">訂購人</th>
-              <th class="py-3.5 px-4">購買商品明細</th>
-              <th class="py-3.5 px-4">訂單金額</th>
-              <th class="py-3.5 px-4">出貨狀態（點擊切換）</th>
-            </tr>
-          </thead>
-          <tbody id="admin-order-tbody" class="divide-y divide-kiln-border text-sm">
-            <!-- 由 JS 動態生成 -->
-          </tbody>
-        </table>
+
+        <!-- 1. 智慧補貨建議表 -->
+        <div class="space-y-3">
+          <h4 class="font-serif-brand text-lg font-bold text-kiln-brown flex items-center gap-2">
+            <i class="fa-solid fa-boxes-stacked text-kiln-amber"></i>
+            <span>主力商品智慧補貨建議</span>
+          </h4>
+          <div class="overflow-x-auto rounded-xl border border-kiln-border">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-kiln-cream/70 border-b border-kiln-border text-xs text-kiln-brown">
+                  <th class="py-3 px-4">商品名稱</th>
+                  <th class="py-3 px-4 text-center">ABC 分級</th>
+                  <th class="py-3 px-4 text-center">現有庫存</th>
+                  <th class="py-3 px-4 text-center">建議補貨量</th>
+                  <th class="py-3 px-4">系統分析原因</th>
+                </tr>
+              </thead>
+              <tbody id="strategy-restock-tbody" class="divide-y divide-kiln-border"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. 經營建議四象限 -->
+        <div class="space-y-3">
+          <h4 class="font-serif-brand text-lg font-bold text-kiln-brown flex items-center gap-2">
+            <i class="fa-solid fa-compass text-kiln-amber"></i>
+            <span>經營策略建議</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 rounded-2xl bg-kiln-paper border-l-4 border-kiln-brown shadow-2xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-kiln-brown text-kiln-gold text-xs font-bold">A 類主力</span>
+                <span class="font-serif-brand font-bold text-kiln-brown">穩住主力商品</span>
+              </div>
+              <p class="text-xs sm:text-sm text-kiln-brown/80 leading-relaxed">
+                優先確保 A 類商品（古法日曝黑豆蔭油、雙甕典藏禮盒）供貨穩定，追蹤安全庫存水位避免缺貨風險，並維持高回購體驗。
+              </p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-kiln-paper border-l-4 border-kiln-amber shadow-2xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-kiln-amber text-white text-xs font-bold">B 類潛力</span>
+                <span class="font-serif-brand font-bold text-kiln-brown">提升成長商品能見度</span>
+              </div>
+              <p class="text-xs sm:text-sm text-kiln-brown/80 leading-relaxed">
+                透過「讓料理遇見對的醬香」情境推薦、組合優惠與 A 類商品交叉推薦，拉抬薄鹽醬油與壺底油膏表現。
+              </p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-kiln-paper border-l-4 border-kiln-gold shadow-2xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-kiln-gold text-kiln-dark text-xs font-bold">C 類長尾</span>
+                <span class="font-serif-brand font-bold text-kiln-brown">檢視長尾商品配置</span>
+              </div>
+              <p class="text-xs sm:text-sm text-kiln-brown/80 leading-relaxed">
+                採小批量精緻備貨，透過「客製禮盒自選」測試顧客搭配偏好；針對週轉較慢品項規劃滿額加價購或主題促銷。
+              </p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-kiln-paper border-l-4 border-emerald-700 shadow-2xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-emerald-700 text-white text-xs font-bold">顧客分層</span>
+                <span class="font-serif-brand font-bold text-kiln-brown">依顧客價值分層經營</span>
+              </div>
+              <p class="text-xs sm:text-sm text-kiln-brown/80 leading-relaxed">
+                為高價值 VIP 顧客安排限量頭抽新品優先體驗，並以料理食譜與補貨提醒培養成長型客群長期黏著度。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 四週行銷企劃 -->
+        <div class="space-y-3">
+          <h4 class="font-serif-brand text-lg font-bold text-kiln-brown flex items-center gap-2">
+            <i class="fa-solid fa-calendar-check text-kiln-amber"></i>
+            <span>四週行銷企劃執行藍圖</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 rounded-2xl border border-kiln-border bg-white space-y-2.5">
+              <span class="text-xs font-bold text-kiln-amber">第 1 週｜主力曝光</span>
+              <h5 class="font-serif-brand text-lg font-bold text-kiln-brown">提高 A 類商品觸及與回購</h5>
+              <ul class="text-xs text-kiln-brown/80 space-y-1 list-disc list-inside">
+                <li>以主力黑豆蔭油料理情境製作社群貼文與短影音</li>
+                <li>向 A 類顧客發送新品或季節補貨提醒</li>
+              </ul>
+              <div class="pt-2 flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">主力商品點擊率提升 10%</span>
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">活動營收佔比達 25%</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-kiln-border bg-white space-y-2.5">
+              <span class="text-xs font-bold text-kiln-amber">第 2 週｜組合交叉銷售</span>
+              <h5 class="font-serif-brand text-lg font-bold text-kiln-brown">讓 B 類商品與主力商品一起被看見</h5>
+              <ul class="text-xs text-kiln-brown/80 space-y-1 list-disc list-inside">
+                <li>推出「蔭油＋油膏」料理黃金組合與搭配食譜</li>
+                <li>在商品頁與結帳前加入滿千免運交叉推薦</li>
+              </ul>
+              <div class="pt-2 flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">組合商品加購率達 12%</span>
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">平均客單價提升 8%</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-kiln-border bg-white space-y-2.5">
+              <span class="text-xs font-bold text-kiln-amber">第 3 週｜顧客分層</span>
+              <h5 class="font-serif-brand text-lg font-bold text-kiln-brown">提高高價值顧客回購並喚回沉睡客</h5>
+              <ul class="text-xs text-kiln-brown/80 space-y-1 list-disc list-inside">
+                <li>提供 A 類顧客專屬新品體驗或免運門檻</li>
+                <li>對近期未回購顧客發送季節料理內容與回購提醒</li>
+              </ul>
+              <div class="pt-2 flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">A 類顧客回購率提升 5%</span>
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">喚回活動轉換率達 6%</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-kiln-border bg-white space-y-2.5">
+              <span class="text-xs font-bold text-kiln-amber">第 4 週｜長尾測試與檢視</span>
+              <h5 class="font-serif-brand text-lg font-bold text-kiln-brown">驗證 C 類商品的組合與促銷方向</h5>
+              <ul class="text-xs text-kiln-brown/80 space-y-1 list-disc list-inside">
+                <li>以客製禮盒或料理情境組合測試 C 類商品（白曝油、素蠔油）</li>
+                <li>比較曝光、轉換、毛利與庫存週轉，整理下月調整清單</li>
+              </ul>
+              <div class="pt-2 flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">測試商品轉換率提升 10%</span>
+                <span class="px-2.5 py-1 rounded-full bg-kiln-cream text-[11px] font-semibold text-kiln-brown">完成 ABC 與庫存檢討</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- ==================== 購物車側邊欄 (Drawer) ==================== -->
+  <!-- ==================== 購物車與信用卡結帳側邊欄 (Drawer) ==================== -->
   <div id="cart-overlay" onclick="toggleCart(false)" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity"></div>
   <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-kiln-paper shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-kiln-gold/40">
-    <div class="p-5 bg-kiln-brown text-white flex items-center justify-between border-b border-kiln-gold/30">
+    <div class="p-4 bg-kiln-brown text-white flex items-center justify-between border-b border-kiln-gold/30 shrink-0">
       <div class="flex items-center gap-2.5">
         <i class="fa-solid fa-basket-shopping text-kiln-gold text-lg"></i>
-        <h3 class="font-serif-brand text-xl font-bold">甕見・購物清單</h3>
+        <h3 class="font-serif-brand text-xl font-bold">甕見・購物車與安全結帳</h3>
       </div>
-      <button onclick="toggleCart(false)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+      <button onclick="toggleCart(false)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
-      <!-- 動態載入 -->
-    </div>
+    <!-- 購物車商品列表 -->
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
 
-    <div id="cart-footer" class="p-5 bg-white border-t border-kiln-border space-y-4">
-      <div class="space-y-1.5 text-sm">
+    <!-- 結帳表單、信用卡付費與總計區 -->
+    <div id="cart-footer" class="p-4 bg-white border-t border-kiln-border space-y-3 max-h-[65vh] overflow-y-auto shrink-0">
+      <div class="space-y-1 text-xs sm:text-sm">
         <div class="flex justify-between text-kiln-brown/70">
           <span>商品小計</span>
           <span id="cart-subtotal">NT$ 0</span>
@@ -571,30 +733,126 @@
           <span>宅配運費（滿千免運）</span>
           <span id="cart-shipping">NT$ 100</span>
         </div>
-        <div class="flex justify-between text-lg font-bold text-kiln-brown pt-2 border-t border-kiln-border">
+        <div class="flex justify-between text-base sm:text-lg font-bold text-kiln-brown pt-1.5 border-t border-kiln-border">
           <span>應付總金額</span>
           <span id="cart-total" class="text-kiln-amber font-serif-brand">NT$ 0</span>
         </div>
       </div>
 
+      <!-- 收件人與聯絡電話（供訂單查詢用） -->
       <div class="space-y-2 pt-1">
-        <input type="text" id="checkout-name" placeholder="收件人姓名（例：林佳蓉）" value="陳冠宇" class="w-full px-3.5 py-2 rounded-xl border border-kiln-border bg-kiln-paper text-sm focus:outline-none focus:border-kiln-amber" />
-        <input type="text" id="checkout-address" placeholder="收件地址（例：高雄市鳳山區...）" value="高雄市鳳山區光復路二段 132 號" class="w-full px-3.5 py-2 rounded-xl border border-kiln-border bg-kiln-paper text-sm focus:outline-none focus:border-kiln-amber" />
+        <div class="grid grid-cols-2 gap-2">
+          <input type="text" id="checkout-name" placeholder="收件人姓名" value="陳冠宇" class="w-full px-3 py-2 rounded-xl border border-kiln-border bg-kiln-paper text-xs sm:text-sm focus:outline-none focus:border-kiln-amber" />
+          <input type="tel" id="checkout-phone" placeholder="下單電話（查詢用）" value="0912345678" class="w-full px-3 py-2 rounded-xl border border-kiln-border bg-kiln-paper text-xs sm:text-sm focus:outline-none focus:border-kiln-amber" />
+        </div>
+        <input type="text" id="checkout-address" placeholder="收件地址" value="高雄市鳳山區光復路二段 132 號" class="w-full px-3 py-2 rounded-xl border border-kiln-border bg-kiln-paper text-xs sm:text-sm focus:outline-none focus:border-kiln-amber" />
       </div>
 
-      <button onclick="submitCheckout()" class="w-full py-3.5 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-kiln-gold font-bold text-base shadow-lg transition flex items-center justify-center gap-2 border border-kiln-gold/50">
-        <i class="fa-solid fa-check-circle"></i>
-        <span>確認結帳下單（同步寫入後台營收）</span>
+      <!-- 付款方式選擇（信用卡線上付費 vs 貨到付款） -->
+      <div class="space-y-2 pt-1">
+        <label class="block text-xs font-bold text-kiln-brown">選擇付款方式</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl border border-kiln-amber bg-kiln-cream/50 cursor-pointer text-xs font-bold text-kiln-brown">
+            <input type="radio" name="payment-method" value="credit-card" checked onchange="toggleCreditCardFields(true)">
+            <i class="fa-regular fa-credit-card text-kiln-amber"></i>
+            <span>信用卡線上付費</span>
+          </label>
+          <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl border border-kiln-border bg-white cursor-pointer text-xs font-medium text-kiln-brown">
+            <input type="radio" name="payment-method" value="cod" onchange="toggleCreditCardFields(false)">
+            <i class="fa-solid fa-truck"></i>
+            <span>宅配貨到付款</span>
+          </label>
+        </div>
+
+        <!-- 信用卡輸入表單 -->
+        <div id="credit-card-fields" class="p-3 rounded-xl bg-gradient-to-br from-kiln-dark to-kiln-brown text-white space-y-2.5 border border-kiln-gold/40">
+          <div class="flex items-center justify-between text-[11px] text-kiln-gold">
+            <span><i class="fa-solid fa-shield-halved mr-1"></i>SSL 256-bit 加密刷卡</span>
+            <span class="flex gap-1.5 text-sm">
+              <i class="fa-brands fa-cc-visa"></i>
+              <i class="fa-brands fa-cc-mastercard"></i>
+              <i class="fa-brands fa-cc-jcb"></i>
+            </span>
+          </div>
+          <div>
+            <input type="text" id="cc-number" maxlength="19" placeholder="信用卡卡號 (例: 4532 8810 2934 7712)" value="4532 8810 2934 7712" oninput="formatCardNumber(this)" class="w-full px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 text-xs font-mono tracking-wider focus:outline-none focus:border-kiln-gold">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="cc-expiry" maxlength="5" placeholder="有效期限 MM/YY" value="09/29" class="w-full px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 text-xs font-mono focus:outline-none focus:border-kiln-gold">
+            <input type="password" id="cc-cvv" maxlength="3" placeholder="安全碼 CVV" value="888" class="w-full px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 text-xs font-mono focus:outline-none focus:border-kiln-gold">
+          </div>
+        </div>
+      </div>
+
+      <button onclick="submitCheckout()" class="w-full py-3 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-kiln-gold font-bold text-sm sm:text-base shadow-lg transition flex items-center justify-center gap-2 border border-kiln-gold/50 cursor-pointer">
+        <i class="fa-solid fa-lock"></i>
+        <span>確認付款並送出訂單</span>
       </button>
     </div>
   </aside>
+
+  <!-- ==================== 訂單成立憑證彈窗 (Modal) ==================== -->
+  <div id="order-receipt-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-kiln-gold text-center space-y-5">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-3xl mx-auto">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div>
+        <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">PAYMENT SUCCESSFUL</span>
+        <h3 class="font-serif-brand text-2xl font-bold text-kiln-brown mt-1">感謝您的訂購！付款已完成</h3>
+        <p class="text-xs text-kiln-brown/70 mt-1">請保存以下訂單編號與電話，隨時可至「訂單查詢」追蹤進度</p>
+      </div>
+      <div id="receipt-details" class="bg-kiln-paper p-4 rounded-2xl border border-kiln-border text-left text-xs sm:text-sm space-y-2"></div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeReceiptAndGoTrack()" class="flex-1 py-3 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-kiln-gold font-bold text-xs sm:text-sm transition cursor-pointer">
+          立即前往查詢訂單
+        </button>
+        <button onclick="document.getElementById('order-receipt-modal').classList.add('hidden')" class="px-4 py-3 rounded-xl bg-kiln-cream hover:bg-kiln-border text-kiln-brown font-bold text-xs sm:text-sm transition cursor-pointer">
+          關閉
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 後台管理員帳號密碼驗證彈窗 (帳密皆為 1234) ==================== -->
+  <div id="admin-login-modal" class="fixed inset-0 bg-black/65 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-kiln-paper rounded-3xl max-w-sm w-full p-7 shadow-2xl border-2 border-kiln-gold/60 space-y-5">
+      <div class="text-center space-y-2">
+        <div class="w-14 h-14 rounded-2xl bg-kiln-brown text-kiln-gold flex items-center justify-center text-2xl mx-auto border border-kiln-gold/50 shadow">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h3 class="font-serif-brand text-2xl font-bold text-kiln-brown">營運管理後台登入</h3>
+        <p class="text-xs text-kiln-brown/70">請輸入管理員帳號與密碼以檢視營收報表、ABC 分類與經營策略</p>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-kiln-brown mb-1">管理員帳號</label>
+          <input type="text" id="admin-username-input" placeholder="請輸入管理員帳號（1234）" class="w-full px-4 py-2.5 rounded-xl border border-kiln-border bg-white text-sm focus:outline-none focus:border-kiln-amber">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-kiln-brown mb-1">管理員密碼</label>
+          <input type="password" id="admin-password-input" onkeydown="if(event.key==='Enter') verifyAdminCredentials()" placeholder="請輸入管理員密碼（1234）" class="w-full px-4 py-2.5 rounded-xl border border-kiln-border bg-white text-sm focus:outline-none focus:border-kiln-amber">
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-kiln-brown/70 bg-white px-3 py-2 rounded-lg border border-kiln-border">
+          <span>預設帳號：<strong class="text-kiln-amber font-mono">1234</strong> ／ 密碼：<strong class="text-kiln-amber font-mono">1234</strong></span>
+          <button onclick="fillDefaultAdminLogin()" class="text-kiln-brown underline font-bold cursor-pointer">一鍵填入</button>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-1">
+        <button onclick="closeAdminLoginModal()" class="flex-1 py-2.5 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium transition cursor-pointer">取消</button>
+        <button onclick="verifyAdminCredentials()" class="flex-1 py-2.5 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-kiln-gold text-sm font-bold shadow transition cursor-pointer">確認登入</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================== 新增商品彈窗 (Modal) ==================== -->
   <div id="add-product-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-kiln-border space-y-4">
       <div class="flex items-center justify-between border-b border-kiln-border pb-3">
         <h3 class="font-serif-brand text-xl font-bold text-kiln-brown">上架「甕見」新醬油商品</h3>
-        <button onclick="closeAddProductModal()" class="text-gray-400 hover:text-gray-700">
+        <button onclick="closeAddProductModal()" class="text-gray-400 hover:text-gray-700 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -643,8 +901,8 @@
         </div>
       </div>
       <div class="flex justify-end gap-2 pt-2">
-        <button onclick="closeAddProductModal()" class="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium">取消</button>
-        <button onclick="confirmAddProduct()" class="px-5 py-2 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-kiln-gold text-sm font-bold shadow">確認上架</button>
+        <button onclick="closeAddProductModal()" class="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium cursor-pointer">取消</button>
+        <button onclick="confirmAddProduct()" class="px-5 py-2 rounded-xl bg-kiln-brown hover:bg-kiln-dark text-kiln-gold text-sm font-bold shadow cursor-pointer">確認上架</button>
       </div>
     </div>
   </div>
@@ -685,9 +943,7 @@
 
         <div>
           <label class="block font-bold text-kiln-brown text-sm mb-2">2. 挑選搭配醬油品項（可勾選多瓶）</label>
-          <div id="giftbox-product-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-56 overflow-y-auto pr-1">
-            <!-- JS 動態生成勾選清單 -->
-          </div>
+          <div id="giftbox-product-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-56 overflow-y-auto pr-1"></div>
         </div>
 
         <div>
@@ -715,7 +971,7 @@
       <div class="flex items-center gap-3">
         <span class="font-serif-brand text-lg font-bold text-kiln-gold">甕見</span>
         <span>｜</span>
-        <span>古法陶甕日曝純釀工藝・台灣在地職人品牌</span>
+        <span>古法陶甕日曝純釀工藝・好醬，遇見好味。</span>
       </div>
       <div class="text-center md:text-right text-kiln-cream/60">
         本網站為「大學商業管理與電子商務課程」專題作業展示系統，所有品牌視覺與數據均為教學模擬用途。
@@ -726,7 +982,7 @@
   <!-- ==================== 完整 JavaScript 核心邏輯 ==================== -->
   <script>
     /**
-     * 客製化 SVG 醬油瓶身與標籤生成器（確保每款商品具備獨立酒標與瓶型）
+     * 客製化 SVG 醬油瓶身與標籤生成器
      */
     function getSoySauceArtworkSVG(styleType, labelTitle, subTitle) {
       const configs = {
@@ -906,7 +1162,7 @@
       </svg>`;
     }
 
-    // 商品資料（十款獨立商品）
+    // ==================== 品牌商品資料（十款「甕見」自有商品，附累計營收供 ABC 分析） ====================
     let products = [
       {
         id: 'WJ-001',
@@ -915,10 +1171,24 @@
         category: '黑豆蔭油系列',
         volume: '420ml / 玻璃瓶',
         price: 380,
-        stock: 145,
+        stock: 22,
+        totalSalesRev: 418000,
         styleType: 'classic-dark',
         badge: '鎮店招牌・銷售冠軍',
         desc: '嚴選台灣本土青仁黑豆，入陶甕日曝 180 天熟成。開瓶豆香撲鼻，入口甘醇厚實，最適合白斬雞沾醬與紅燒料理。'
+      },
+      {
+        id: 'WJ-006',
+        name: '甕見・雙甕職人典藏禮盒',
+        shortLabel: '雙甕禮盒',
+        category: '職人禮盒組',
+        volume: '420ml × 2 瓶 / 木質禮盒',
+        price: 880,
+        stock: 15,
+        totalSalesRev: 334400,
+        styleType: 'gift-box',
+        badge: '企業年節贈禮推薦',
+        desc: '內含「甕見・古法日曝黑豆蔭油」與「甕見・陳年壺底油膏」各乙瓶，搭配手工松木禮盒與燙金腰封，體面大方。'
       },
       {
         id: 'WJ-002',
@@ -927,7 +1197,8 @@
         category: '薄鹽甘醇系列',
         volume: '420ml / 玻璃瓶',
         price: 320,
-        stock: 112,
+        stock: 48,
+        totalSalesRev: 185600,
         styleType: 'bamboo-green',
         badge: '減鈉 25%・健康首選',
         desc: '降低 25% 鈉含量卻不減醬香厚度，以天然甘草與黑豆原汁調和，清甜不死鹹，涼拌時蔬、清蒸鮮魚與日常炒菜皆宜。'
@@ -939,10 +1210,37 @@
         category: '料理油膏系列',
         volume: '420ml / 寬肩瓶',
         price: 350,
-        stock: 98,
+        stock: 42,
+        totalSalesRev: 154000,
         styleType: 'warm-orange',
         badge: '糯米勾芡・濃郁掛汁',
         desc: '取陶甕最底層精華原汁，搭配台灣西螺純糯米慢火熬煮成膏。質地絲滑亮澤，蛋餅、蘿蔔糕、蒜泥白肉的靈魂良伴。'
+      },
+      {
+        id: 'WJ-005',
+        name: '甕見・有機黑豆清油',
+        shortLabel: '黑豆清油',
+        category: '黑豆蔭油系列',
+        volume: '420ml / 玻璃瓶',
+        price: 450,
+        stock: 36,
+        totalSalesRev: 112500,
+        styleType: 'royal-indigo',
+        badge: '慈心有機認證・限量批次',
+        desc: '100% 台灣有機契作黑豆釀製，滴水不加的原汁頭抽。風味純淨高雅，尾韻帶有淡淡焦糖與堅果香氣。'
+      },
+      {
+        id: 'WJ-010',
+        name: '甕見・四季平安四入大禮盒',
+        shortLabel: '四季平安禮盒',
+        category: '職人禮盒組',
+        volume: '420ml × 4 瓶 / 豪華禮盒',
+        price: 1580,
+        stock: 18,
+        totalSalesRev: 94800,
+        styleType: 'gift-box',
+        badge: '尊榮旗艦・一次擁有',
+        desc: '集結黑豆蔭油、薄鹽醬油、壺底油膏與白醬油四款經典代表作，送禮氣派大方。'
       },
       {
         id: 'WJ-004',
@@ -952,45 +1250,10 @@
         volume: '400ml / 修長瓶',
         price: 420,
         stock: 64,
+        totalSalesRev: 67200,
         styleType: 'white-soy',
         badge: '清澈琥珀・保留食材原色',
         desc: '採低溫發酵與龍眼木文火殺菌，色澤如金黃琥珀般清透。提鮮同時不改變食材原本色澤，高湯調味與日式蒸蛋必備。'
-      },
-      {
-        id: 'WJ-005',
-        name: '甕見・有機黑豆清油',
-        shortLabel: '黑豆清油',
-        category: '黑豆蔭油系列',
-        volume: '420ml / 玻璃瓶',
-        price: 450,
-        stock: 76,
-        styleType: 'royal-indigo',
-        badge: '慈心有機認證・限量批次',
-        desc: '100% 台灣有機契作黑豆釀製，滴水不加的原汁頭抽。風味純淨高雅，尾韻帶有淡淡焦糖與堅果香氣。'
-      },
-      {
-        id: 'WJ-006',
-        name: '甕見・雙甕職人典藏禮盒',
-        shortLabel: '雙甕禮盒',
-        category: '職人禮盒組',
-        volume: '420ml × 2 瓶 / 木質禮盒',
-        price: 880,
-        stock: 52,
-        styleType: 'gift-box',
-        badge: '企業年節贈禮推薦',
-        desc: '內含「甕見・古法日曝黑豆蔭油」與「甕見・陳年壺底油膏」各乙瓶，搭配手工松木禮盒與燙金腰封，體面大方。'
-      },
-      {
-        id: 'WJ-007',
-        name: '甕見・極品白曝油',
-        shortLabel: '極品白曝',
-        category: '薄鹽甘醇系列',
-        volume: '400ml / 玻璃瓶',
-        price: 460,
-        stock: 45,
-        styleType: 'white-soy',
-        badge: '夏季限定・頂級頭抽',
-        desc: '僅在盛夏陽光最烈時日曝 120 天，汲取第一道最精華的黑豆原汁，香氣層次極為豐富。'
       },
       {
         id: 'WJ-008',
@@ -1000,9 +1263,23 @@
         volume: '420ml / 寬肩瓶',
         price: 340,
         stock: 88,
+        totalSalesRev: 51000,
         styleType: 'warm-orange',
         badge: '埔里香菇・素食可用',
         desc: '嚴選南投埔里在地乾香菇與黑豆蔭油慢火熬製，鮮甜濃郁，適合炒米粉、炒青菜與素食紅燒料理。'
+      },
+      {
+        id: 'WJ-007',
+        name: '甕見・極品白曝油',
+        shortLabel: '極品白曝',
+        category: '薄鹽甘醇系列',
+        volume: '400ml / 玻璃瓶',
+        price: 460,
+        stock: 45,
+        totalSalesRev: 36800,
+        styleType: 'white-soy',
+        badge: '夏季限定・頂級頭抽',
+        desc: '僅在盛夏陽光最烈時日曝 120 天，汲取第一道最精華的黑豆原汁，香氣層次極為豐富。'
       },
       {
         id: 'WJ-009',
@@ -1012,22 +1289,21 @@
         volume: '500ml / 陶甕瓶',
         price: 620,
         stock: 30,
+        totalSalesRev: 30900,
         styleType: 'classic-dark',
         badge: '限量珍藏・無過濾原汁',
         desc: '傳承百年老缸沈澱的精華原油，不經人工過濾，完整保留豐富胺基酸與天然酵母風味。'
-      },
-      {
-        id: 'WJ-010',
-        name: '甕見・四季平安四入大禮盒',
-        shortLabel: '四季平安禮盒',
-        category: '職人禮盒組',
-        volume: '420ml × 4 瓶 / 豪華禮盒',
-        price: 1580,
-        stock: 25,
-        styleType: 'gift-box',
-        badge: '尊榮旗艦・一次擁有',
-        desc: '集結黑豆蔭油、薄鹽醬油、壺底油膏與白醬油四款經典代表作，送禮氣派大方。'
       }
+    ];
+
+    // VIP 顧客資料（供 ABC 顧客貢獻分析）
+    let vipCustomers = [
+      { name: '王雅婷', tier: 'A 級 VIP', ordersCount: 14, totalSpent: 18650 },
+      { name: '張明哲', tier: 'A 級 VIP', ordersCount: 11, totalSpent: 15420 },
+      { name: '陳怡君', tier: 'A 級 VIP', ordersCount: 9, totalSpent: 12980 },
+      { name: '林宗翰', tier: 'B 級常客', ordersCount: 6, totalSpent: 7450 },
+      { name: '黃品涵', tier: 'B 級常客', ordersCount: 5, totalSpent: 6120 },
+      { name: '李建宏', tier: 'C 級新客', ordersCount: 2, totalSpent: 2180 }
     ];
 
     let cart = [
@@ -1037,18 +1313,203 @@
 
     let metrics = {
       totalRevenue: 1485200,
-      totalOrders: 1642,
-      novRevenue: 304200
+      totalOrders: 1642
     };
 
+    // 訂單資料庫（包含下單電話與付款方式，支援顧客查詢與後台管理）
     let orders = [
-      { id: 'WJ20261114-089', customer: '林雅婷', items: '甕見・雙甕職人典藏禮盒 × 2', amount: 1760, status: '待出貨' },
-      { id: 'WJ20261114-088', customer: '張哲維', items: '甕見・古法日曝黑豆蔭油 × 3、甕見・陳年壺底油膏 × 2', amount: 1840, status: '已出貨' },
-      { id: 'WJ20261113-087', customer: '王品涵', items: '甕見・有機黑豆清油 × 2、甕見・柴燒手工白醬油 × 1', amount: 1320, status: '已完成' },
-      { id: 'WJ20261113-086', customer: '李宗翰', items: '甕見・特級甘醇薄鹽醬油 × 4', amount: 1280, status: '已完成' }
+      { id: 'WJ20261114-089', customer: '林雅婷', phone: '0912345678', items: '甕見・雙甕職人典藏禮盒 × 2', payment: '信用卡一次付清 (**** 7712)', amount: 1760, status: '待出貨', date: '2026-11-14 14:25' },
+      { id: 'WJ20261114-088', customer: '張哲維', phone: '0922333444', items: '甕見・古法日曝黑豆蔭油 × 3、甕見・陳年壺底油膏 × 2', payment: '信用卡一次付清 (**** 3091)', amount: 1840, status: '已出貨', date: '2026-11-14 10:12' },
+      { id: 'WJ20261113-087', customer: '王品涵', phone: '0933555666', items: '甕見・有機黑豆清油 × 2、甕見・柴燒手工白醬油 × 1', payment: '宅配貨到付款', amount: 1320, status: '已完成', date: '2026-11-13 18:40' },
+      { id: 'WJ20261113-086', customer: '李宗翰', phone: '0988777666', items: '甕見・特級甘醇薄鹽醬油 × 4', payment: '信用卡一次付清 (**** 5520)', amount: 1280, status: '已完成', date: '2026-11-13 09:50' }
     ];
 
     let currentCategory = '全部商品';
+    let isAdminAuthenticated = false;
+    let lastCreatedOrder = null;
+
+    // ==================== 導覽與視圖切換 ====================
+    function switchView(viewName) {
+      const storeEl = document.getElementById('view-store');
+      const ordersEl = document.getElementById('view-orders');
+      const adminEl = document.getElementById('view-admin');
+
+      const btnStore = document.getElementById('btn-view-store');
+      const btnOrders = document.getElementById('btn-view-orders');
+      const btnAdmin = document.getElementById('btn-view-admin');
+
+      const activeClass = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 bg-kiln-gold text-kiln-dark shadow shrink-0 cursor-pointer';
+      const inactiveClass = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-1.5 text-kiln-cream/80 hover:text-white shrink-0 cursor-pointer';
+
+      storeEl.classList.add('hidden');
+      ordersEl.classList.add('hidden');
+      adminEl.classList.add('hidden');
+
+      btnStore.className = inactiveClass;
+      btnOrders.className = inactiveClass;
+      btnAdmin.className = inactiveClass;
+
+      if (viewName === 'store') {
+        storeEl.classList.remove('hidden');
+        btnStore.className = activeClass;
+        renderStoreProducts();
+      } else if (viewName === 'orders') {
+        ordersEl.classList.remove('hidden');
+        btnOrders.className = activeClass;
+      } else if (viewName === 'admin') {
+        adminEl.classList.remove('hidden');
+        btnAdmin.className = activeClass;
+        renderAdminDashboard();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function jumpToRecommend() {
+      switchView('store');
+      setTimeout(() => {
+        const el = document.getElementById('recommend-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 80);
+    }
+
+    // ==================== 後台帳號密碼保護驗證（帳號 1234 / 密碼 1234） ====================
+    function requestAdminAccess() {
+      if (isAdminAuthenticated) {
+        switchView('admin');
+      } else {
+        document.getElementById('admin-username-input').value = '';
+        document.getElementById('admin-password-input').value = '';
+        document.getElementById('admin-login-modal').classList.remove('hidden');
+        setTimeout(() => document.getElementById('admin-username-input').focus(), 100);
+      }
+    }
+
+    function fillDefaultAdminLogin() {
+      document.getElementById('admin-username-input').value = '1234';
+      document.getElementById('admin-password-input').value = '1234';
+    }
+
+    function closeAdminLoginModal() {
+      document.getElementById('admin-login-modal').classList.add('hidden');
+    }
+
+    function verifyAdminCredentials() {
+      const user = document.getElementById('admin-username-input').value.trim();
+      const pwd = document.getElementById('admin-password-input').value.trim();
+      if (user === '1234' && pwd === '1234') {
+        isAdminAuthenticated = true;
+        closeAdminLoginModal();
+        switchView('admin');
+        showToast('管理員帳號密碼驗證成功，歡迎進入營運管理中心！');
+      } else {
+        showToast('帳號或密碼錯誤！請輸入帳號 1234、密碼 1234', 'warning');
+      }
+    }
+
+    function lockAdminSession() {
+      isAdminAuthenticated = false;
+      switchView('store');
+      showToast('已安全登出並鎖定管理後台');
+    }
+
+    // ==================== 後台子分頁切換 ====================
+    function switchAdminTab(tabName) {
+      const subOverview = document.getElementById('admin-sub-overview');
+      const subAbc = document.getElementById('admin-sub-abc');
+      const subStrategy = document.getElementById('admin-sub-strategy');
+
+      const tabOverview = document.getElementById('tab-admin-overview');
+      const tabAbc = document.getElementById('tab-admin-abc');
+      const tabStrategy = document.getElementById('tab-admin-strategy');
+
+      const activeTab = 'flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-bold bg-kiln-brown text-kiln-gold shadow transition flex items-center justify-center gap-2 cursor-pointer';
+      const inactiveTab = 'flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-medium text-kiln-brown hover:bg-kiln-cream transition flex items-center justify-center gap-2 cursor-pointer';
+
+      subOverview.classList.add('hidden');
+      subAbc.classList.add('hidden');
+      subStrategy.classList.add('hidden');
+
+      tabOverview.className = inactiveTab;
+      tabAbc.className = inactiveTab;
+      tabStrategy.className = inactiveTab;
+
+      if (tabName === 'overview') {
+        subOverview.classList.remove('hidden');
+        tabOverview.className = activeTab;
+      } else if (tabName === 'abc') {
+        subAbc.classList.remove('hidden');
+        tabAbc.className = activeTab;
+        renderABCAnalysis();
+      } else if (tabName === 'strategy') {
+        subStrategy.classList.remove('hidden');
+        tabStrategy.className = activeTab;
+        renderStrategyRestock();
+      }
+    }
+
+    // ==================== 訂單查詢功能 (ORDER TRACKING) ====================
+    function fillSampleTrackOrder() {
+      if (orders.length > 0) {
+        document.getElementById('track-order-id').value = orders[0].id;
+        document.getElementById('track-order-phone').value = orders[0].phone;
+        searchCustomerOrder();
+      }
+    }
+
+    function searchCustomerOrder() {
+      const idInput = document.getElementById('track-order-id').value.trim().toUpperCase();
+      const phoneInput = document.getElementById('track-order-phone').value.trim();
+      const resultEl = document.getElementById('order-track-result');
+
+      if (!idInput || !phoneInput) {
+        showToast('請完整輸入「訂單編號」與「下單電話」', 'warning');
+        return;
+      }
+
+      const found = orders.find(o => o.id.toUpperCase() === idInput && o.phone === phoneInput);
+      resultEl.classList.remove('hidden');
+
+      if (!found) {
+        resultEl.innerHTML = `
+          <div class="p-6 rounded-2xl bg-red-50 border border-red-200 text-center space-y-2">
+            <i class="fa-solid fa-circle-xmark text-3xl text-red-500"></i>
+            <h4 class="font-bold text-red-800">查無相符的訂單資料</h4>
+            <p class="text-xs text-red-600">請確認訂單編號（例：WJ20261114-089）與下單聯絡電話是否輸入正確。</p>
+          </div>`;
+        return;
+      }
+
+      let badgeColor = 'bg-amber-100 text-amber-800';
+      if (found.status === '已出貨') badgeColor = 'bg-blue-100 text-blue-800';
+      if (found.status === '已完成') badgeColor = 'bg-emerald-100 text-emerald-800';
+
+      resultEl.innerHTML = `
+        <div class="p-6 rounded-2xl bg-kiln-paper border-2 border-kiln-gold/60 space-y-4 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-kiln-border pb-3">
+            <div>
+              <span class="text-xs text-kiln-brown/60 block">訂單編號</span>
+              <span class="font-mono text-lg font-bold text-kiln-brown">${found.id}</span>
+            </div>
+            <span class="px-3.5 py-1 rounded-full text-xs font-bold ${badgeColor}">
+              處理狀態：${found.status}
+            </span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div><span class="text-kiln-brown/60">訂購人：</span><strong>${found.customer}</strong></div>
+            <div><span class="text-kiln-brown/60">聯絡電話：</span><strong>${found.phone}</strong></div>
+            <div><span class="text-kiln-brown/60">下單時間：</span><span>${found.date || '2026-11-14'}</span></div>
+            <div><span class="text-kiln-brown/60">付款方式：</span><span class="text-emerald-700 font-semibold">${found.payment}</span></div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white border border-kiln-border text-sm">
+            <span class="text-xs text-kiln-brown/60 block mb-1">訂購商品明細</span>
+            <p class="font-medium text-kiln-brown">${found.items}</p>
+          </div>
+          <div class="flex justify-between items-center pt-1">
+            <span class="text-xs text-kiln-brown/60">含運實付總金額</span>
+            <span class="font-serif-brand text-2xl font-bold text-kiln-amber">NT$ ${found.amount.toLocaleString()}</span>
+          </div>
+        </div>`;
+    }
 
     // ==================== 智慧醬香推薦功能 ====================
     function runRecommendation() {
@@ -1119,7 +1580,7 @@
 
     function renderGiftBoxProductOptions() {
       const container = document.getElementById('giftbox-product-list');
-      container.innerHTML = products.map((p, idx) => `
+      container.innerHTML = products.filter(p => !p.id.startsWith('GIFT-')).map((p, idx) => `
         <label class="flex items-center gap-3 p-2.5 rounded-xl border border-kiln-border bg-white hover:bg-kiln-cream/40 cursor-pointer transition">
           <input type="checkbox" name="giftbox-item" value="${p.id}" data-price="${p.price}" ${idx < 2 ? 'checked' : ''} onchange="calculateGiftBoxTotal()" class="w-4 h-4 text-kiln-amber focus:ring-kiln-amber rounded">
           <div class="w-10 h-10 rounded overflow-hidden border border-kiln-border shrink-0">
@@ -1168,12 +1629,13 @@
 
       products.push({
         id: customGiftId,
-        name: `【客製禮盒】${boxName} (內含: ${selectedItems.join('、')})`,
+        name: `【客製禮盒】${boxName} (${selectedItems.join('、')})`,
         shortLabel: '客製禮盒',
         category: '職人禮盒組',
         volume: '專屬木盒包裝',
         price: totalPrice,
         stock: 99,
+        totalSalesRev: totalPrice,
         styleType: 'gift-box',
         badge: `祝福：${blessing}`,
         desc: `顧客自選組合：${selectedItems.join('、')}。附祝福小卡：「${blessing}」`
@@ -1186,37 +1648,14 @@
       showToast('已成功為您客製專屬禮盒並加入購物車！');
     }
 
-    // ==================== 視圖切換控制 ====================
-    function switchView(viewName) {
-      const storeEl = document.getElementById('view-store');
-      const adminEl = document.getElementById('view-admin');
-      const btnStore = document.getElementById('btn-view-store');
-      const btnAdmin = document.getElementById('btn-view-admin');
-
-      if (viewName === 'store') {
-        storeEl.classList.remove('hidden');
-        adminEl.classList.add('hidden');
-        btnStore.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 bg-kiln-gold text-kiln-dark font-bold shadow';
-        btnAdmin.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 text-kiln-cream/80 hover:text-white';
-        renderStoreProducts();
-      } else {
-        storeEl.classList.add('hidden');
-        adminEl.classList.remove('hidden');
-        btnAdmin.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 bg-kiln-gold text-kiln-dark font-bold shadow';
-        btnStore.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 text-kiln-cream/80 hover:text-white';
-        renderAdminDashboard();
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
     // ==================== 前台商品渲染與篩選 ====================
     function filterCategory(category) {
       currentCategory = category;
       document.querySelectorAll('.cat-btn').forEach(btn => {
         if (btn.dataset.cat === category) {
-          btn.className = 'cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-brown text-white shadow transition';
+          btn.className = 'cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-brown text-white shadow transition cursor-pointer';
         } else {
-          btn.className = 'cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition';
+          btn.className = 'cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-kiln-cream text-kiln-brown hover:bg-kiln-border/60 transition cursor-pointer';
         }
       });
       renderStoreProducts();
@@ -1224,9 +1663,10 @@
 
     function renderStoreProducts() {
       const grid = document.getElementById('product-grid');
+      const visibleProducts = products.filter(p => !p.id.startsWith('GIFT-'));
       const filtered = currentCategory === '全部商品'
-        ? products
-        : products.filter(p => p.category === currentCategory);
+        ? visibleProducts
+        : visibleProducts.filter(p => p.category === currentCategory);
 
       grid.innerHTML = filtered.map(p => {
         const isOutOfStock = p.stock <= 0;
@@ -1272,7 +1712,18 @@
       }).join('');
     }
 
-    // ==================== 購物車互動與結帳 ====================
+    // ==================== 購物車互動與信用卡結帳 ====================
+    function toggleCreditCardFields(show) {
+      const box = document.getElementById('credit-card-fields');
+      if (show) box.classList.remove('hidden');
+      else box.classList.add('hidden');
+    }
+
+    function formatCardNumber(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 16);
+      input.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+    }
+
     function toggleCart(open) {
       const overlay = document.getElementById('cart-overlay');
       const drawer = document.getElementById('cart-drawer');
@@ -1353,21 +1804,21 @@
 
         return `
         <div class="bg-white p-3.5 rounded-xl border border-kiln-border flex items-center gap-3.5 shadow-2xs">
-          <div class="w-16 h-16 rounded-lg overflow-hidden border border-kiln-border shrink-0">
+          <div class="w-14 h-14 rounded-lg overflow-hidden border border-kiln-border shrink-0">
             ${getSoySauceArtworkSVG(prod.styleType, prod.name, prod.shortLabel)}
           </div>
           <div class="flex-1 min-w-0">
-            <h5 class="font-serif-brand font-bold text-sm text-kiln-brown truncate">${prod.name}</h5>
-            <p class="text-xs text-kiln-amber font-semibold mt-0.5">NT$ ${prod.price.toLocaleString()} / 瓶</p>
-            <div class="flex items-center gap-2 mt-2">
+            <h5 class="font-serif-brand font-bold text-xs sm:text-sm text-kiln-brown truncate">${prod.name}</h5>
+            <p class="text-xs text-kiln-amber font-semibold mt-0.5">NT$ ${prod.price.toLocaleString()}</p>
+            <div class="flex items-center gap-2 mt-1.5">
               <button onclick="updateCartQty('${prod.id}', -1)" class="w-6 h-6 rounded-md bg-kiln-cream hover:bg-kiln-border text-kiln-brown text-xs font-bold cursor-pointer">-</button>
               <span class="text-xs font-bold w-6 text-center">${item.qty}</span>
               <button onclick="updateCartQty('${prod.id}', 1)" class="w-6 h-6 rounded-md bg-kiln-cream hover:bg-kiln-border text-kiln-brown text-xs font-bold cursor-pointer">+</button>
             </div>
           </div>
           <div class="text-right">
-            <span class="font-bold text-sm text-kiln-brown block">NT$ ${itemTotal.toLocaleString()}</span>
-            <button onclick="updateCartQty('${prod.id}', -999)" class="text-xs text-gray-400 hover:text-red-600 mt-2 cursor-pointer">
+            <span class="font-bold text-xs sm:text-sm text-kiln-brown block">NT$ ${itemTotal.toLocaleString()}</span>
+            <button onclick="updateCartQty('${prod.id}', -999)" class="text-[11px] text-gray-400 hover:text-red-600 mt-2 cursor-pointer">
               <i class="fa-solid fa-trash-can"></i> 移除
             </button>
           </div>
@@ -1385,6 +1836,20 @@
     function submitCheckout() {
       if (cart.length === 0) return;
       const customerName = document.getElementById('checkout-name').value.trim() || '貴賓顧客';
+      const customerPhone = document.getElementById('checkout-phone').value.trim() || '0912345678';
+      const payMethod = document.querySelector('input[name="payment-method"]:checked').value;
+
+      let paymentLabel = '宅配貨到付款';
+      if (payMethod === 'credit-card') {
+        const ccNum = document.getElementById('cc-number').value.replace(/\s+/g, '');
+        const ccExp = document.getElementById('cc-expiry').value.trim();
+        const ccCvv = document.getElementById('cc-cvv').value.trim();
+        if (ccNum.length < 12 || !ccExp || ccCvv.length < 3) {
+          showToast('請完整填寫信用卡卡號、有效期限與安全碼', 'warning');
+          return;
+        }
+        paymentLabel = `信用卡一次付清 (**** ${ccNum.slice(-4)})`;
+      }
 
       let subtotal = 0;
       const itemDescriptions = [];
@@ -1392,8 +1857,10 @@
       cart.forEach(item => {
         const prod = products.find(p => p.id === item.productId);
         if (prod) {
-          subtotal += prod.price * item.qty;
+          const lineTotal = prod.price * item.qty;
+          subtotal += lineTotal;
           prod.stock = Math.max(0, prod.stock - item.qty);
+          prod.totalSalesRev = (prod.totalSalesRev || 0) + lineTotal;
           itemDescriptions.push(`${prod.name} × ${item.qty}`);
         }
       });
@@ -1402,39 +1869,67 @@
       const orderAmount = subtotal + shipping;
 
       metrics.totalRevenue += orderAmount;
-      metrics.novRevenue += orderAmount;
       metrics.totalOrders += 1;
 
       const orderId = `WJ20261114-${String(Math.floor(Math.random() * 900) + 100)}`;
-      orders.unshift({
+      const newOrderObj = {
         id: orderId,
         customer: customerName,
+        phone: customerPhone,
         items: itemDescriptions.join('、'),
+        payment: paymentLabel,
         amount: orderAmount,
-        status: '待出貨'
-      });
+        status: '待出貨',
+        date: '2026-11-14 21:28'
+      };
+      orders.unshift(newOrderObj);
+      lastCreatedOrder = newOrderObj;
+
+      // 同步更新 VIP 顧客排行
+      const existingVip = vipCustomers.find(v => v.name === customerName);
+      if (existingVip) {
+        existingVip.ordersCount += 1;
+        existingVip.totalSpent += orderAmount;
+      } else {
+        vipCustomers.push({ name: customerName, tier: 'B 級新貴', ordersCount: 1, totalSpent: orderAmount });
+      }
 
       cart = [];
       updateCartBadge();
       toggleCart(false);
       renderStoreProducts();
-      renderAdminDashboard();
+      if (isAdminAuthenticated) renderAdminDashboard();
 
-      showToast(`訂單 ${orderId} 結帳成功！後台總營收已即時增加 NT$ ${orderAmount.toLocaleString()}`);
+      // 顯示訂單成立憑證彈窗
+      document.getElementById('receipt-details').innerHTML = `
+        <div class="flex justify-between"><span class="text-kiln-brown/60">訂單編號：</span><strong class="font-mono text-kiln-amber">${orderId}</strong></div>
+        <div class="flex justify-between"><span class="text-kiln-brown/60">下單電話：</span><strong>${customerPhone}</strong></div>
+        <div class="flex justify-between"><span class="text-kiln-brown/60">付款方式：</span><strong class="text-emerald-700">${paymentLabel}</strong></div>
+        <div class="flex justify-between"><span class="text-kiln-brown/60">實付金額：</span><strong class="text-kiln-brown">NT$ ${orderAmount.toLocaleString()}</strong></div>
+      `;
+      document.getElementById('order-receipt-modal').classList.remove('hidden');
     }
 
-    // ==================== 後台營運管理系統渲染 ====================
+    function closeReceiptAndGoTrack() {
+      document.getElementById('order-receipt-modal').classList.add('hidden');
+      switchView('orders');
+      if (lastCreatedOrder) {
+        document.getElementById('track-order-id').value = lastCreatedOrder.id;
+        document.getElementById('track-order-phone').value = lastCreatedOrder.phone;
+        searchCustomerOrder();
+      }
+    }
+
+    // ==================== 後台營運管理、ABC 分類與經營策略渲染 ====================
     function renderAdminDashboard() {
       document.getElementById('kpi-revenue').textContent = `NT$ ${metrics.totalRevenue.toLocaleString()}`;
       document.getElementById('kpi-orders').textContent = metrics.totalOrders.toLocaleString();
       const aov = Math.round(metrics.totalRevenue / metrics.totalOrders);
       document.getElementById('kpi-aov').textContent = `NT$ ${aov.toLocaleString()}`;
 
-      const novWan = (metrics.novRevenue / 10000).toFixed(1);
-      document.getElementById('chart-nov-label').textContent = `${novWan}萬`;
-
+      // 渲染商品庫存表
       const prodTbody = document.getElementById('admin-product-tbody');
-      prodTbody.innerHTML = products.map(p => `
+      prodTbody.innerHTML = products.filter(p => !p.id.startsWith('GIFT-')).map(p => `
         <tr class="hover:bg-kiln-paper/60 transition">
           <td class="py-3 px-4">
             <div class="flex items-center gap-3">
@@ -1459,7 +1954,7 @@
           <td class="py-3 px-4">
             <div class="flex items-center gap-1.5">
               <button onclick="adjustProductStock('${p.id}', -5)" class="w-6 h-6 rounded bg-kiln-cream hover:bg-kiln-border text-xs font-bold cursor-pointer">-5</button>
-              <span class="w-10 text-center font-bold ${p.stock < 20 ? 'text-red-600' : 'text-kiln-brown'}">${p.stock}</span>
+              <span class="w-10 text-center font-bold ${p.stock < 25 ? 'text-red-600' : 'text-kiln-brown'}">${p.stock}</span>
               <button onclick="adjustProductStock('${p.id}', 10)" class="w-7 h-6 rounded bg-kiln-cream hover:bg-kiln-border text-xs font-bold cursor-pointer">+10</button>
             </div>
           </td>
@@ -1471,6 +1966,7 @@
         </tr>
       `).join('');
 
+      // 渲染訂單管理列表
       const orderTbody = document.getElementById('admin-order-tbody');
       orderTbody.innerHTML = orders.map((o, idx) => {
         let statusClass = 'bg-amber-100 text-amber-800';
@@ -1480,13 +1976,103 @@
         return `
         <tr class="hover:bg-kiln-paper/60 transition">
           <td class="py-3.5 px-4 font-mono text-xs font-bold text-kiln-brown">${o.id}</td>
-          <td class="py-3.5 px-4 font-medium">${o.customer}</td>
+          <td class="py-3.5 px-4">
+            <div class="font-bold text-kiln-brown text-xs sm:text-sm">${o.customer}</div>
+            <div class="text-[11px] text-gray-500">${o.phone}</div>
+          </td>
           <td class="py-3.5 px-4 text-xs text-gray-600 max-w-xs truncate" title="${o.items}">${o.items}</td>
+          <td class="py-3.5 px-4 text-xs font-medium text-emerald-700">${o.payment}</td>
           <td class="py-3.5 px-4 font-bold text-kiln-amber">NT$ ${o.amount.toLocaleString()}</td>
           <td class="py-3.5 px-4">
             <button onclick="cycleOrderStatus(${idx})" class="px-3 py-1 rounded-full text-xs font-bold transition cursor-pointer ${statusClass}">
               ${o.status} <i class="fa-solid fa-rotate ml-1 text-[10px]"></i>
             </button>
+          </td>
+        </tr>`;
+      }).join('');
+
+      renderABCAnalysis();
+      renderStrategyRestock();
+    }
+
+    // 渲染 ABC 商品與顧客分析
+    function renderABCAnalysis() {
+      const baseProducts = products.filter(p => !p.id.startsWith('GIFT-'));
+      const sorted = [...baseProducts].sort((a, b) => (b.totalSalesRev || 0) - (a.totalSalesRev || 0));
+      const totalRev = sorted.reduce((sum, p) => sum + (p.totalSalesRev || 0), 0) || 1;
+
+      let cumulativePct = 0;
+      const abcTbody = document.getElementById('abc-product-tbody');
+      abcTbody.innerHTML = sorted.map((p, idx) => {
+        const rev = p.totalSalesRev || 0;
+        const pct = (rev / totalRev) * 100;
+        cumulativePct += pct;
+
+        let grade = 'C';
+        let badgeStyle = 'bg-gray-200 text-gray-700';
+        if (cumulativePct <= 72) {
+          grade = 'A';
+          badgeStyle = 'bg-kiln-brown text-kiln-gold';
+        } else if (cumulativePct <= 92) {
+          grade = 'B';
+          badgeStyle = 'bg-kiln-amber/20 text-kiln-amber border border-kiln-amber/40';
+        }
+
+        return `
+        <tr class="hover:bg-white transition">
+          <td class="py-3 px-3 font-mono font-bold text-xs text-kiln-brown/70">#${idx + 1}</td>
+          <td class="py-3 px-3">
+            <div class="font-bold text-kiln-brown">${p.name}</div>
+            <div class="text-[11px] text-kiln-brown/60">${p.category}</div>
+          </td>
+          <td class="py-3 px-3 text-right font-bold text-kiln-brown">NT$ ${rev.toLocaleString()}</td>
+          <td class="py-3 px-3 text-right text-xs text-kiln-brown/80">${pct.toFixed(1)}%</td>
+          <td class="py-3 px-3 text-right text-xs font-semibold text-kiln-amber">${Math.min(100, cumulativePct).toFixed(1)}%</td>
+          <td class="py-3 px-3 text-center">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-black ${badgeStyle}">${grade}</span>
+          </td>
+          <td class="py-3 px-3 text-right font-bold ${p.stock < 25 ? 'text-red-600' : 'text-kiln-brown'}">${p.stock}</td>
+        </tr>`;
+      }).join('');
+
+      // 顧客貢獻排行
+      const sortedVip = [...vipCustomers].sort((a, b) => b.totalSpent - a.totalSpent);
+      const custTbody = document.getElementById('abc-customer-tbody');
+      custTbody.innerHTML = sortedVip.map((c, idx) => `
+        <tr class="hover:bg-white transition">
+          <td class="py-3 px-2 font-mono text-xs font-bold text-kiln-brown/70">#${idx + 1}</td>
+          <td class="py-3 px-2">
+            <div class="font-bold text-kiln-brown">${c.name}</div>
+            <div class="text-[10px] text-gray-500">累計 ${c.ordersCount} 筆訂單</div>
+          </td>
+          <td class="py-3 px-2 text-center">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-kiln-cream text-kiln-amber border border-kiln-border">${c.tier}</span>
+          </td>
+          <td class="py-3 px-2 text-right font-bold text-kiln-brown">NT$ ${c.totalSpent.toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    // 渲染補貨與經營策略
+    function renderStrategyRestock() {
+      const baseProducts = products.filter(p => !p.id.startsWith('GIFT-'));
+      const sorted = [...baseProducts].sort((a, b) => (b.totalSalesRev || 0) - (a.totalSalesRev || 0));
+      const topItems = sorted.slice(0, 4);
+
+      const restockTbody = document.getElementById('strategy-restock-tbody');
+      restockTbody.innerHTML = topItems.map((p, idx) => {
+        const grade = idx < 2 ? 'A' : 'B';
+        const suggestQty = p.stock < 30 ? 36 : 24;
+        return `
+        <tr class="hover:bg-kiln-paper/50 transition">
+          <td class="py-3.5 px-4 font-bold text-kiln-brown">${p.name}</td>
+          <td class="py-3.5 px-4 text-center">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-kiln-brown text-kiln-gold text-xs font-bold">${grade}</span>
+          </td>
+          <td class="py-3.5 px-4 text-center font-bold ${p.stock < 25 ? 'text-red-600' : 'text-kiln-brown'}">${p.stock} 件</td>
+          <td class="py-3.5 px-4 text-center font-bold text-emerald-700">+ ${suggestQty} 件</td>
+          <td class="py-3.5 px-4 text-xs text-kiln-brown/80">
+            ${grade === 'A' ? 'A 類主力商品持續帶來高營收，建議維持 45 件以上安全庫存' : 'B 類高成長品項搭配料理推薦轉換率佳，建議提前備貨'}
           </td>
         </tr>`;
       }).join('');
@@ -1554,6 +2140,7 @@
         volume,
         price,
         stock,
+        totalSalesRev: price * 12,
         styleType,
         badge: '新品上市・職人特調',
         desc
